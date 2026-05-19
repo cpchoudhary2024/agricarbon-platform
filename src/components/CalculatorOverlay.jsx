@@ -809,7 +809,7 @@ export default function CalculatorOverlay() {
 
                 {/* Export actions */}
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
-                  <button onClick={exportPdf} className="btn-forest" style={{ flex: '1 1 220px', justifyContent: 'center' }}>↓ Download Branded PDF Report</button>
+                  <button onClick={exportPdf} className="btn-forest" style={{ flex: '1 1 220px', justifyContent: 'center' }}>↓ Download PDF Report</button>
                   <button onClick={exportReport} className="btn-outline-terra" style={{ flex: '1 1 180px', justifyContent: 'center' }}>↓ Methodology Report (TXT)</button>
                   <button onClick={copyShareLink} className="btn-outline-terra" style={{ flex: '1 1 160px', justifyContent: 'center' }}>{linkCopied ? '✓ Link Copied' : '🔗 Share Scenario'}</button>
                   <button onClick={copyCitation} className="btn-outline-terra" style={{ flex: '1 1 160px', justifyContent: 'center' }}>{copied ? '✓ Copied' : 'Copy IPCC Citation'}</button>
@@ -1232,7 +1232,7 @@ export default function CalculatorOverlay() {
             {/* Export actions */}
             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '16px' }}>
               <button onClick={exportPdf} className="btn-forest" style={{ flex: '1 1 220px', justifyContent: 'center' }}>
-                ↓ Download Branded PDF Report
+                ↓ Download PDF Report
               </button>
               <button onClick={exportReport} className="btn-outline-terra" style={{ flex: '1 1 180px', justifyContent: 'center' }}>
                 ↓ Methodology Report (TXT)

@@ -35,8 +35,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        display: ['Poppins', 'sans-serif'],
+        sans: ['IBM Plex Sans', 'Inter', 'sans-serif'],
+        display: ['Merriweather', 'Cormorant Garamond', 'serif'],
+        mono: ['IBM Plex Mono', 'Courier', 'monospace'],
       },
       boxShadow: {
         'glow': '0 0 20px rgba(244, 196, 48, 0.3)',

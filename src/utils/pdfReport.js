@@ -40,14 +40,14 @@ function header(doc, pageNum, total) {
   fillHex(doc, C.forest900); doc.rect(0, 0, PAGE_W, 8, 'F');
   fillHex(doc, C.gold500);   doc.rect(0, 8, PAGE_W, 1, 'F');
 
-  doc.setFont('helvetica', 'bold');
+  doc.setFont('courier', 'bold');
   doc.setFontSize(8); textHex(doc, C.cream50);
   doc.text('AGRICARBON ESTIMATOR', M, 5.5);
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('courier', 'normal');
   doc.text('IPCC 2006 · Vol. 4 · Tier 1', PAGE_W - M, 5.5, { align: 'right' });
 
   // Footer
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+  doc.setFont('courier', 'normal'); doc.setFontSize(7);
   textHex(doc, C.faint);
   doc.text(`Page ${pageNum} of ${total} · Generated ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`,
     PAGE_W / 2, PAGE_H - 8, { align: 'center' });
@@ -58,11 +58,11 @@ function header(doc, pageNum, total) {
 
 function sectionTitle(doc, y, eyebrow, title) {
   textHex(doc, C.forest500);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(7);
+  doc.setFont('courier', 'bold'); doc.setFontSize(7);
   doc.text(eyebrow.toUpperCase(), M, y);
 
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+  doc.setFont('courier', 'bold'); doc.setFontSize(15);
   doc.text(title, M, y + 7);
 
   drawHex(doc, C.gold500); doc.setLineWidth(0.6);
@@ -72,18 +72,18 @@ function sectionTitle(doc, y, eyebrow, title) {
 
 function paragraph(doc, x, y, text, opts = {}) {
   const { size = 9.5, color = C.brown700, maxW = PAGE_W - 2 * M - 8, lineH = 4.5, bold = false } = opts;
-  doc.setFont('helvetica', bold ? 'bold' : 'normal'); doc.setFontSize(size);
+  doc.setFont('courier', bold ? 'bold' : 'normal'); doc.setFontSize(size);
   textHex(doc, color);
   const lines = doc.splitTextToSize(text, maxW);
-  lines.forEach((ln, i) => doc.text(ln, x, y + i * lineH));
+  lines.forEach((ln, i) => doc.text(ln, x, y + i * lineH, { align: 'left' }));
   return y + lines.length * lineH;
 }
 
 function kvRow(doc, y, label, value, opts = {}) {
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+  doc.setFont('courier', 'normal'); doc.setFontSize(8);
   textHex(doc, C.faint);
   doc.text(label, M + 2, y);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(9);
+  doc.setFont('courier', 'bold'); doc.setFontSize(9);
   textHex(doc, opts.valueColor || C.forest900);
   doc.text(String(value), PAGE_W - M - 2, y, { align: 'right' });
   drawHex(doc, C.cream200); doc.setLineWidth(0.15);
@@ -98,15 +98,15 @@ function kpiCard(doc, x, y, w, h, label, value, unit, accent) {
   fillHex(doc, accent); doc.rect(x, y, w, 0.8, 'F');
 
   textHex(doc, C.faint);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(6);
+  doc.setFont('courier', 'bold'); doc.setFontSize(6);
   doc.text(label.toUpperCase(), x + w / 2, y + 5, { align: 'center' });
 
   textHex(doc, accent);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+  doc.setFont('courier', 'bold'); doc.setFontSize(14);
   doc.text(String(value), x + w / 2, y + 13, { align: 'center' });
 
   textHex(doc, C.brown500);
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5);
+  doc.setFont('courier', 'normal'); doc.setFontSize(6.5);
   doc.text(unit, x + w / 2, y + 17, { align: 'center' });
 }
 
@@ -128,14 +128,14 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   fillHex(doc, C.gold500);   doc.rect(0, 88, PAGE_W, 1.5, 'F');
 
   textHex(doc, C.cream50);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+  doc.setFont('courier', 'bold'); doc.setFontSize(8);
   doc.text('AGRICARBON ESTIMATOR', M, 18);
-  doc.setFont('helvetica', 'normal');
+  doc.setFont('courier', 'normal');
   doc.text('IPCC 2006 · Vol. 4 · Chapter 2 · Tier 1', M, 23);
 
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(28);
+  doc.setFont('courier', 'bold'); doc.setFontSize(28);
   doc.text('Carbon Audit Report', M, 52);
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(13);
+  doc.setFont('courier', 'normal'); doc.setFontSize(13);
   doc.text('Soil Organic Carbon Sequestration Analysis', M, 62);
 
   textHex(doc, '#D1E6D9');
@@ -151,17 +151,17 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   doc.rect(M, y, 3, 38, 'F');
 
   textHex(doc, C.faint);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(7);
+  doc.setFont('courier', 'bold'); doc.setFontSize(7);
   doc.text('TOTAL CO₂E SEQUESTERED', M + 8, y + 8);
 
   textHex(doc, result.deltaSocPerHa >= 0 ? C.forest700 : C.terra500);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(32);
+  doc.setFont('courier', 'bold'); doc.setFontSize(32);
   doc.text(
     `${result.co2eTotal >= 0 ? '+' : ''}${result.co2eTotal.toLocaleString(undefined, { maximumFractionDigits: 1 })}`,
     M + 8, y + 22
   );
   textHex(doc, C.brown500);
-  doc.setFont('helvetica', 'normal'); doc.setFontSize(10);
+  doc.setFont('courier', 'normal'); doc.setFontSize(10);
   doc.text('tonnes CO₂e', M + 8, y + 30);
 
   textHex(doc, C.faint);
@@ -180,22 +180,22 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
     y = 184;
     fillHex(doc, C.cream100); doc.roundedRect(M, y, PAGE_W - 2 * M, 32, 3, 3, 'F');
     textHex(doc, C.faint);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(7);
+    doc.setFont('courier', 'bold'); doc.setFontSize(7);
     doc.text('SOIL HEALTH SCORE CARD', M + 6, y + 8);
 
     textHex(doc, soilHealth.grade.color);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(28);
+    doc.setFont('courier', 'bold'); doc.setFontSize(28);
     doc.text(`${soilHealth.score}`, M + 6, y + 22);
 
     textHex(doc, C.brown500);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+    doc.setFont('courier', 'normal'); doc.setFontSize(9);
     doc.text(`/ 100  ·  Grade ${soilHealth.grade.letter}  ·  ${soilHealth.grade.label}`, M + 28, y + 22);
 
     // mini bars
     const bx = PAGE_W - M - 80, bw = 70;
     Object.entries(soilHealth.breakdown).forEach(([k, b], i) => {
       const by = y + 7 + i * 7;
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(7); textHex(doc, C.brown500);
+      doc.setFont('courier', 'normal'); doc.setFontSize(7); textHex(doc, C.brown500);
       doc.text(k, bx, by);
       doc.text(`${b.score}`, bx + bw, by, { align: 'right' });
       fillHex(doc, C.cream200); doc.roundedRect(bx, by + 1, bw, 1.4, 0.7, 0.7, 'F');
@@ -205,7 +205,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
 
   // Executive summary
   y = 226;
-  doc.setFont('helvetica', 'italic'); doc.setFontSize(9); textHex(doc, C.brown500);
+  doc.setFont('courier', 'italic'); doc.setFontSize(9); textHex(doc, C.brown500);
   const summary = result.deltaSocPerHa >= 0
     ? `The proposed management scenario sequesters ${Math.abs(result.co2eTotal).toLocaleString(undefined, { maximumFractionDigits: 1 })} tonnes of CO₂-equivalent over ${Math.min(inputs.years, 20)} years across ${inputs.area} hectares. This corresponds to an annual soil organic carbon accrual rate of ${Math.abs(result.co2ePerHaPerYear).toFixed(2)} t CO₂e per hectare per year — calculated using IPCC 2006 Vol. 4 Ch. 2 Tier 1 global default coefficients with full uncertainty propagation.`
     : `The proposed scenario is a NET CARBON LOSS of ${Math.abs(result.co2eTotal).toLocaleString(undefined, { maximumFractionDigits: 1 })} tonnes CO₂e relative to baseline. Re-design the scenario before proceeding to certification.`;
@@ -226,7 +226,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
 
   // Parameter table
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+  doc.setFont('courier', 'bold'); doc.setFontSize(10);
   doc.text('Project Inputs', M, y); y += 5;
 
   y = kvRow(doc, y, 'Climate Zone',          inputs.climateZoneLabel || inputs.climateZone);
@@ -242,7 +242,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
 
   y += 6;
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+  doc.setFont('courier', 'bold'); doc.setFontSize(10);
   doc.text('IPCC Factors (dimensionless)', M, y); y += 5;
 
   if (result.factors) {
@@ -273,11 +273,11 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   if (tornado && tornado.rows.length) {
     y = need(doc, y, 90);
     textHex(doc, C.forest900);
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.setFont('courier', 'bold'); doc.setFontSize(11);
     doc.text('Sensitivity Tornado — which decision matters most', M, y); y += 5;
 
     textHex(doc, C.brown500);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(8);
+    doc.setFont('courier', 'normal'); doc.setFontSize(8);
     doc.text('One-at-a-time sweep. Width = swing in total CO₂e if that parameter alone changes across its full range.', M, y); y += 6;
 
     const barAreaX = M + 50;
@@ -292,7 +292,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
 
     tornado.rows.forEach((r, i) => {
       const ry = y + i * rowH;
-      doc.setFont('helvetica', 'normal'); doc.setFontSize(8); textHex(doc, C.brown700);
+      doc.setFont('courier', 'normal'); doc.setFontSize(8); textHex(doc, C.brown700);
       doc.text(r.name, M, ry + 3.5);
 
       const lowW  = Math.abs(r.deltaFromCentralLow)  / maxAbs * (barAreaW / 2);
@@ -323,13 +323,13 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
     const rows = projection.rows.filter((_, i) => i % 2 === 0 || i === projection.rows.length - 1);
     const colX = [M, M + 16, M + 44, M + 72, M + 100, M + 130];
     const headers = ['Year', 'Annual t CO₂e', 'Gross USD', 'Costs USD', 'Net USD', 'Cum Net USD'];
-    doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); textHex(doc, C.forest700);
+    doc.setFont('courier', 'bold'); doc.setFontSize(7.5); textHex(doc, C.forest700);
     headers.forEach((h, i) => doc.text(h, colX[i], y));
     drawHex(doc, C.forest500); doc.setLineWidth(0.25);
     doc.line(M, y + 1.4, PAGE_W - M, y + 1.4);
     y += 5;
 
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+    doc.setFont('courier', 'normal'); doc.setFontSize(7.5);
     rows.forEach(r => {
       y = need(doc, y, 5);
       textHex(doc, C.brown700);
@@ -352,7 +352,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   y = sectionTitle(doc, y, 'Appendix', 'Citation, Disclaimer & Sources');
 
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+  doc.setFont('courier', 'bold'); doc.setFontSize(10);
   doc.text('Primary citation', M, y); y += 5;
   y = paragraph(doc, M, y,
     'IPCC (2006). 2006 IPCC Guidelines for National Greenhouse Gas Inventories, Volume 4: Agriculture, Forestry and Other Land Use. Editors: Eggleston H.S., Buendia L., Miwa K., Ngara T. & Tanabe K. Published by IGES, Japan.',
@@ -360,7 +360,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   y += 4;
 
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+  doc.setFont('courier', 'bold'); doc.setFontSize(10);
   doc.text('Suggested in-text citation', M, y); y += 5;
   fillHex(doc, C.cream100); doc.roundedRect(M, y, PAGE_W - 2 * M, 16, 2, 2, 'F');
   y = paragraph(doc, M + 4, y + 4,
@@ -370,7 +370,7 @@ export async function generatePdfReport({ result, inputs, soilHealth, benchmark,
   y += 10;
 
   textHex(doc, C.forest900);
-  doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+  doc.setFont('courier', 'bold'); doc.setFontSize(10);
   doc.text('Important methodological notes', M, y); y += 5;
   y = paragraph(doc, M, y,
     '• Results are screening-level Tier 1 estimates using IPCC global default coefficients. For project-level carbon credit certification (Verra VCS, Gold Standard, Plan Vivo), Tier 2 or Tier 3 methodology requires field-level soil sampling and validation by an accredited body.',

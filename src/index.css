@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400;1,700&family=Inter:ital,opsz,wght@0,14..32,300..800;1,14..32,300..800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -81,7 +81,7 @@ body::after {
 
 @layer base {
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', 'Inter', sans-serif;
     color: var(--text-b);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -90,7 +90,7 @@ body::after {
     letter-spacing: -0.01em;
   }
   h1, h2, h3, h4 {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Merriweather', 'Cormorant Garamond', serif;
     color: var(--text-h);
     letter-spacing: -0.025em;
   }
@@ -119,7 +119,7 @@ body::after {
   width: 100%; padding: 10px 14px;
   background: var(--cream); border: 1.5px solid var(--linen);
   border-radius: 9px; color: var(--text-h);
-  font-family: 'Inter', sans-serif; font-size: 13px;
+  font-family: 'IBM Plex Sans', 'Inter', sans-serif; font-size: 13px;
   outline: none; appearance: none; -webkit-appearance: none;
   transition: border-color 0.18s, box-shadow 0.18s;
 }
@@ -153,7 +153,7 @@ input[type=range].slider-premium::-webkit-slider-thumb:hover {
   padding: 12px 28px;
   background: linear-gradient(135deg, var(--g-700) 0%, var(--g-600) 100%);
   color: var(--cream);
-  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 14px;
+  font-family: 'IBM Plex Sans', 'Inter', sans-serif; font-weight: 600; font-size: 14px;
   letter-spacing: -0.01em; border: none; border-radius: 10px; cursor: pointer;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 1px 2px rgba(0,0,0,0.18), 0 4px 14px rgba(21, 82, 51, 0.28),
@@ -172,7 +172,7 @@ input[type=range].slider-premium::-webkit-slider-thumb:hover {
   display: inline-flex; align-items: center; gap: 8px;
   padding: 11px 24px;
   background: transparent; color: var(--rust-d);
-  font-family: 'Inter', sans-serif; font-weight: 600; font-size: 13px;
+  font-family: 'IBM Plex Sans', 'Inter', sans-serif; font-weight: 600; font-size: 13px;
   letter-spacing: -0.01em; border: 1.5px solid var(--rust);
   border-radius: 10px; cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -191,7 +191,7 @@ input[type=range].slider-premium::-webkit-slider-thumb:hover {
 
 /* ─── Eyebrow ─────────────────────────────────────────────────── */
 .eyebrow-premium {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Sans', 'Inter', sans-serif;
   font-size: 10px; font-weight: 700;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--g-500); margin: 0 0 14px;
@@ -211,7 +211,7 @@ input[type=range].slider-premium::-webkit-slider-thumb:hover {
 
 /* ─── Data labels ─────────────────────────────────────────────── */
 .mono-label {
-  font-family: 'Inter', sans-serif;
+  font-family: 'IBM Plex Mono', 'Courier', monospace;
   font-variant-numeric: tabular-nums;
   font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
 }
