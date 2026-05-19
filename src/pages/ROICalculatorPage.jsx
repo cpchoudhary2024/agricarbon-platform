@@ -266,6 +266,32 @@ export default function ROICalculatorPage() {
           </div>
         </div>
 
+        {/* ── Step guide strip ── */}
+        <div style={{
+          display: 'flex', gap: '0', marginBottom: '22px',
+          borderRadius: '14px', overflow: 'hidden',
+          border: '1px solid rgba(21,82,51,0.12)',
+          boxShadow: '0 2px 12px rgba(3,12,6,0.06)',
+        }}>
+          {[
+            { n: '1', label: 'Farm Profile', desc: 'Area · carbon rate · credit price · time horizon', color: G['700'] },
+            { n: '2', label: 'Implementation Costs', desc: 'Seed · equipment · labour · MRV certification', color: G['600'] },
+            { n: '3', label: 'Subsidies & Results', desc: 'EQIP/CSP eligibility · NPV · IRR · comparison', color: '#7c3aed' },
+          ].map((s, i, arr) => (
+            <div key={s.n} style={{
+              flex: 1, padding: '14px 18px',
+              background: i === 0 ? 'linear-gradient(135deg,#F0FDF4,#DCFCE7)' : i === 1 ? '#FEFDF9' : 'linear-gradient(135deg,#F5F3FF,#EDE9FE)',
+              borderRight: i < arr.length - 1 ? '1px solid rgba(21,82,51,0.1)' : 'none',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                <div style={{ width: '22px', height: '22px', borderRadius: '50%', background: s.color, color: '#FEFDF9', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>{s.n}</div>
+                <span style={{ fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '12px', color: s.color, letterSpacing: '-0.01em' }}>{s.label}</span>
+              </div>
+              <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '10px', color: F.muted, margin: 0, lineHeight: 1.5, paddingLeft: '30px' }}>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+
         {/* ── Two-column layout: inputs left, results right ── */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '20px', alignItems: 'start' }}>
 
