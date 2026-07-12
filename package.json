@@ -1,27 +1,21 @@
 {
-  "name": "agricarbon-estimator",
+  "name": "ground-truth",
   "private": true,
-  "version": "1.0.0",
+  "version": "2.0.0",
+  "description": "An independent, fully-cited decision tool for US farmers weighing agricultural carbon contracts.",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "node --test \"src/**/*.test.mjs\"",
+    "preview": "vite preview",
+    "harvest": "node scripts/build-map.mjs && node scripts/harvest-counties.mjs",
+    "validate": "node scripts/validate-raca.mjs"
   },
   "dependencies": {
-    "@react-three/drei": "^9.122.0",
-    "@react-three/fiber": "^8.18.0",
-    "animejs": "^3.2.2",
-    "gsap": "^3.12.7",
-    "jspdf": "^4.2.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-intersection-observer": "^10.0.3",
-    "react-is": "^19.2.6",
-    "react-router-dom": "^7.15.1",
-    "recharts": "^3.8.1",
-    "three": "^0.168.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

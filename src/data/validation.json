@@ -1,0 +1,103 @@
+{
+  "generated": "2026-07-11T23:44:40.225Z",
+  "source": "USDA Rapid Carbon Assessment (RaCA), 2016 release",
+  "nSamples": 16014,
+  "nTotalRaCA": 145127,
+  "coordinatesRestricted": true,
+  "csi": {
+    "lab": {
+      "median": 0.69,
+      "p25": 0.35,
+      "p75": 1.36,
+      "p90": 2.41
+    },
+    "ssurgo": {
+      "median": 0.45,
+      "p25": 0.34,
+      "p75": 0.64,
+      "p90": 1.1
+    }
+  },
+  "pctAboveCapacity": 35.22,
+  "pearsonFineFractionVsSoc": 0.095,
+  "pearsonBinMedians": 0.575,
+  "excluded": {
+    "noData": 111515,
+    "subsoil": 10003,
+    "oHorizon": 6961,
+    "organicSoil": 209,
+    "noTexture": 425
+  },
+  "bins": [
+    {
+      "fineFraction": "0–10",
+      "n": 881,
+      "medianSoc": 5.51,
+      "p90Soc": 31.45,
+      "hassinkCapacity": 5.94
+    },
+    {
+      "fineFraction": "10–20",
+      "n": 1093,
+      "medianSoc": 6.33,
+      "p90Soc": 24.5,
+      "hassinkCapacity": 9.64
+    },
+    {
+      "fineFraction": "20–30",
+      "n": 3180,
+      "medianSoc": 10.44,
+      "p90Soc": 38.38,
+      "hassinkCapacity": 13.34
+    },
+    {
+      "fineFraction": "30–40",
+      "n": 3238,
+      "medianSoc": 15.03,
+      "p90Soc": 49.49,
+      "hassinkCapacity": 17.04
+    },
+    {
+      "fineFraction": "40–50",
+      "n": 3867,
+      "medianSoc": 16.43,
+      "p90Soc": 46.96,
+      "hassinkCapacity": 20.74
+    },
+    {
+      "fineFraction": "50–60",
+      "n": 1119,
+      "medianSoc": 10.96,
+      "p90Soc": 32.28,
+      "hassinkCapacity": 24.44
+    },
+    {
+      "fineFraction": "60–70",
+      "n": 1481,
+      "medianSoc": 14.41,
+      "p90Soc": 40.83,
+      "hassinkCapacity": 28.14
+    },
+    {
+      "fineFraction": "70–80",
+      "n": 1155,
+      "medianSoc": 10.46,
+      "p90Soc": 29.56,
+      "hassinkCapacity": 31.84
+    }
+  ],
+  "bands": {
+    "lab": {
+      "moderate-headroom": 15.89,
+      "saturated": 31.95,
+      "high-headroom": 44.77,
+      "near-capacity": 7.39
+    },
+    "ssurgo": {
+      "high-headroom": 71.88,
+      "saturated": 10.05,
+      "moderate-headroom": 13.08,
+      "near-capacity": 4.99
+    }
+  }
+}
