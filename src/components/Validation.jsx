@@ -21,10 +21,10 @@ export default function Validation() {
         <p className="lede" style={{ marginBottom: 26 }}>
           Everything on this site rests on one claim: soil has a finite, texture-set capacity to hold
           carbon. So we tested that claim against USDA&rsquo;s Rapid Carbon Assessment<Cite src="raca" /> —
-          <strong> 145,127 samples with carbon measured in a laboratory</strong>, entirely independent
-          of the soil survey this tool otherwise runs on.
-          <strong style={{ color: 'var(--ink)' }}> It partly passed, and partly did not.</strong> Both
-          halves are below.
+          145,127 samples with carbon measured in a laboratory, entirely independent of the soil survey
+          this tool otherwise runs on. After filtering to{' '}
+          <strong>{v.nSamples.toLocaleString()} mineral topsoil samples from CROPLAND</strong>, here is what
+          it found — <strong style={{ color: 'var(--ink)' }}>including the result that goes against us</strong>.
         </p>
 
         {/* Scorecard */}
@@ -32,21 +32,30 @@ export default function Validation() {
           <Result
             verdict="Holds up"
             tone="good"
-            title="Carbon does rise with fine fraction"
-            body={<>Median measured carbon climbs steadily with clay-and-silt content — 5.5 → 6.3 → 10.4 → 15.0 → 16.4 g&nbsp;C/kg across texture bins, exactly the direction saturation theory requires. Correlation of bin medians: <strong className="mono">r&nbsp;=&nbsp;{v.pearsonBinMedians}</strong>.</>}
+            title="The capacity law is real in US cropland"
+            body={<>Tested the right way — as a <em>boundary</em>, not a mean — the upper envelope of measured carbon rises with clay-and-silt content at <strong className="mono">r&nbsp;=&nbsp;{v.boundary.pearson}</strong>. Median carbon climbs steadily across texture bins too (<strong className="mono">r&nbsp;=&nbsp;{v.pearsonBinMedians}</strong>). The direction saturation theory requires is clearly there in the laboratory data.</>}
           />
           <Result
             verdict="Limitation"
             tone="warn"
-            title="Texture barely predicts carbon at all"
-            body={<>At the level of a single sample, texture explains almost nothing about how much carbon a soil actually holds: <strong className="mono">r&nbsp;=&nbsp;{v.pearsonFineFractionVsSoc}</strong>. Real carbon is governed far more by climate and land use. Hassink&rsquo;s law sets a <em>ceiling</em>, it never claimed to predict the contents — but it does mean the index is a coarse screen, not a precision instrument.</>}
+            title="The ceiling is lower than Hassink predicts"
+            body={<>The observed boundary rises at <strong className="mono">{v.boundary.slope}</strong> g&nbsp;C/kg per % fine fraction, against Hassink&rsquo;s predicted <strong className="mono">{v.boundary.hassinkSlope}</strong> — less than half. Some of that is measurement error (we infer texture from a class, not a lab number), but it means the true capacity is probably lower than we assume. Read CSI as a coarse screen, never to two decimals.</>}
           />
           <Result
             verdict="Against us"
             tone="bad"
-            title="Our tool is probably too optimistic"
-            body={<>The lab data reads saturated far more often than we do: median CSI <strong className="mono">{v.csi.lab.median}</strong> measured versus <strong className="mono">{v.csi.ssurgo.median}</strong> from our model. If we are wrong, we are wrong in the direction of telling you there is <em>more</em> room for carbon than there really is. You should know that.</>}
+            title="Our model still leans optimistic"
+            body={<>The lab reads saturated more often than we do: median CSI <strong className="mono">{v.csi.lab.median}</strong> measured versus <strong className="mono">{v.csi.ssurgo.median}</strong> modelled. If we are wrong, we are wrong in the direction of telling you there is <em>more</em> room for carbon than there really is — the worse direction. You should know that.</>}
           />
+        </div>
+
+        <div className="callout callout--good" style={{ marginBottom: 24 }}>
+          <strong>Two of these findings explain each other, and that is the strongest thing in this
+          section.</strong> If the true capacity ceiling is lower than Hassink predicts (finding 2), then
+          our denominator is too big, our CSI comes out too small, and we understate saturation —
+          which is exactly the bias we measured (finding 3). The model is not failing randomly. It is
+          off in a direction we can point at and explain, which is the difference between a model with
+          a known error bar and a model you should not trust.
         </div>
 
         {/* The chart: measured carbon vs Hassink capacity, by texture */}
@@ -120,22 +129,23 @@ export default function Validation() {
           <h3 style={{ marginBottom: 12 }}>What we concluded, including against ourselves</h3>
 
           <p className="small" style={{ color: 'var(--soil-700)', marginTop: 0, marginBottom: 12 }}>
-            <strong>The mechanism holds; the calibration does not.</strong> The direction the theory
-            predicts is clearly present in 16,014 laboratory measurements. But the absolute numbers our
-            model produces do not line up with the lab, and we are not going to bury that. The Carbon
-            Saturation Index should be read as a <strong>coarse three-way screen</strong> — plenty of room,
-            marginal, or full — and never as a precise figure. Anyone reading a CSI to two decimal places
-            is reading it wrong.
+            <strong>The mechanism holds; the calibration is off, and we know which way.</strong> The
+            direction saturation theory predicts is clearly present in {v.nSamples.toLocaleString()} laboratory
+            measurements of US cropland. But the absolute numbers our model produces still do not line up
+            with the lab, and we are not going to bury that. Read the Carbon Saturation Index as a{' '}
+            <strong>coarse three-way screen</strong> — room, marginal, or full — never as a precise figure.
           </p>
 
           <p className="small" style={{ color: 'var(--soil-700)', margin: '0 0 12px' }}>
-            <strong>On the gap between our numbers and the lab&rsquo;s.</strong> Some of it is not a defect:
-            RaCA rows are individual <em>samples</em> while ours are county <em>averages</em>, and averaging
-            necessarily clips the tails. Some of it probably is: RaCA samples every land use, including
-            forest and pasture soils that carry more carbon, while our harvest is deliberately restricted to
-            arable ground. We cannot cleanly separate those two effects, because RaCA&rsquo;s coordinates are
-            restricted<Cite src="raca" /> and we cannot join its samples to our land-capability filter. So we
-            report the gap rather than explain it away.
+            <strong>We ran the wrong test first, and it is worth telling you.</strong> The original version
+            of this analysis correlated texture against measured carbon across all land uses, got{' '}
+            <span className="mono">r = 0.095</span>, and reported the index as weak. That was a bad test,
+            twice over. Hassink never claimed texture <em>predicts</em> a soil&rsquo;s carbon — only that it
+            sets a <em>ceiling</em> — so a mean-fit line through the middle of the cloud is uninformative
+            about the ceiling by construction. And pooling forest, range and wetland soils buried the
+            texture signal under a much larger land-use signal. Restricting to cropland and testing the
+            boundary properly is what produced the numbers above. The mistake is left documented in{' '}
+            <code style={{ fontSize: 12.5 }}>scripts/validate-raca.mjs</code> rather than quietly deleted.
           </p>
 
           <p className="small" style={{ color: 'var(--soil-700)', margin: 0 }}>

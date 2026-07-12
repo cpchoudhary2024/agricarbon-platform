@@ -53,6 +53,34 @@ export const SOURCES = {
           'seeding $5–18/ac, termination $0–10/ac. Median surveyed all-in cost $37/ac.',
   },
 
+  isuAgDecisionMaker: {
+    title: 'Estimated Costs of Crop Production in Iowa / Cover Crop Cost Sheets',
+    org: 'Iowa State University Extension — Ag Decision Maker',
+    year: 2025,
+    url: 'https://www.extension.iastate.edu/AgDM/crops/html/a1-20.html',
+    retrieved: '2026-07-11',
+    tier: 'government',
+    note: 'The current cost baseline, updated annually — which SARE’s 2019 survey is not. Total annual ' +
+          'cover-crop cost runs about $57–68/ac depending on seeding method (drill, aerial, broadcast) ' +
+          'and termination. That is substantially more than the $37/ac median farmers are often quoted ' +
+          'from older surveys, and using the stale figure quietly flatters every carbon deal on the market.',
+  },
+
+  plastina2024: {
+    title: 'Net returns to cereal rye cover crops in Iowa',
+    authors: 'Plastina, A., et al.',
+    org: 'Iowa State University Extension — Ag Decision Maker',
+    year: 2024,
+    url: 'https://www.extension.iastate.edu/agdm/articles/plastina/PlaMar24.html',
+    retrieved: '2026-07-11',
+    tier: 'peer-reviewed',
+    note: 'The most uncomfortable number on this site, and the one farmers most deserve to see. Across ' +
+          'Iowa trials, net returns to cereal rye WITHOUT grazing averaged −$50/acre and were NEGATIVE ' +
+          'in 82% of treatments. With grazing, 45% of plots returned a positive average of +$43/acre. ' +
+          'Cover crops are not free money; whether they pay depends enormously on whether you can put ' +
+          'an animal on them, and no carbon programme’s marketing will tell you that.',
+  },
+
   nrcsPaymentSchedules: {
     title: 'NRCS Conservation Program Payment Schedules',
     org: 'USDA Natural Resources Conservation Service',

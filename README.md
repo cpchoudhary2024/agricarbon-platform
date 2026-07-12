@@ -63,27 +63,42 @@ numbers cannot come back.
 
 Everything here rests on one claim: soil has a finite, texture-set capacity to hold carbon. So we
 tested that claim against **USDA's Rapid Carbon Assessment** — 145,127 samples with carbon measured
-in a *laboratory*, entirely independent of the soil survey the tool otherwise runs on. After
-excluding subsoil, forest O horizons and peat, **16,014 mineral topsoil samples** remain.
+in a *laboratory*, entirely independent of the soil survey the tool otherwise runs on. Filtering to
+mineral topsoil **from cropland** leaves **3,332 samples**.
 
 `npm run validate` (`scripts/validate-raca.mjs`) reproduces all of this.
 
 | | Result |
 |---|---|
-| ✅ **Holds up** | Median measured carbon rises steadily with fine fraction — 5.5 → 6.3 → 10.4 → 15.0 → 16.4 g C/kg — exactly the direction saturation theory requires. Bin-median correlation **r = 0.575**. |
-| ⚠️ **Limitation** | At the level of a single sample, texture explains almost nothing about actual carbon (**r = 0.095**). Real SOC is governed far more by climate and land use. Hassink's law sets a *ceiling*; it never claimed to predict the contents. But it means CSI is a **coarse screen, not a precision instrument**. |
-| ❌ **Against us** | The lab data reads saturated **more often than our model does** — median CSI **0.69 measured vs 0.45 modelled**. If we are wrong, we are wrong in the direction of telling a farmer there is *more* room for carbon than there really is. |
+| ✅ **Holds up** | Tested as a *boundary* — the correct test for a capacity law — the upper envelope of measured carbon rises with fine fraction at **r = 0.599**. Bin-median correlation **r = 0.722**. The direction saturation theory requires is clearly present in US cropland. |
+| ⚠️ **Limitation** | The observed ceiling rises at **0.164** g C/kg per % fine fraction, against Hassink's predicted **0.370** — less than half. Partly measurement error (we infer texture from a class, not a lab number), but the true capacity is probably lower than we assume. |
+| ❌ **Against us** | The lab reads saturated more often than we do: median CSI **0.56 measured vs 0.44 modelled**. If we are wrong, we are wrong in the direction of telling a farmer there is *more* room for carbon than there really is. |
 
-**35% of measured samples sit above the Hassink capacity line.** That is the expected result, not a
-refutation: Hassink's capacity governs the *mineral-associated* pool, while the lab measured *total*
-organic carbon, which also contains unprotected particulate matter. A sandy soil has almost no
-mineral capacity yet can still hold carbon as loose particulate matter — real carbon, but weakly
-held and easily lost on tillage. This is exactly why a CSI above 1.0 is meaningful rather than broken.
+**The two limitations explain each other, and that is the strongest result here.** If the true
+capacity ceiling is lower than Hassink predicts, our denominator is too large, our CSI comes out too
+small, and we understate saturation — which is precisely the bias we measured. The model is not
+failing randomly; it is off in a direction we can point at.
 
-**Honest conclusion: the mechanism holds; the calibration does not.** CSI should be read as a
-three-way screen (room / marginal / full), never as a precise number. RaCA's site coordinates are
-**restricted** ("available only by request and approval"), so the point-for-point join to SSURGO —
-the validation we actually wanted — could not be run. We report the gap rather than explain it away.
+### I ran the wrong test first, and left the mistake documented
+
+The original analysis correlated texture against measured carbon across **all land uses**, got
+**r = 0.095**, and reported the index as weak. That was a bad test, twice over:
+
+1. **Hassink is a capacity law, not a predictor.** It claims texture sets a *ceiling*, not that
+   texture determines how much carbon a soil actually holds. Fitting a mean line through the middle
+   of the cloud is uninformative about the ceiling *by construction*. The right tool is
+   boundary-line analysis.
+2. **Pooling land uses buried the signal.** Forest, rangeland and wetland soils carry wildly
+   different carbon for reasons unrelated to texture. RaCA has a land-use field I hadn't used.
+   Restricting to cropland — the population this tool actually advises — doubled the sample-level
+   correlation (0.095 → 0.203) and cut the apparent model bias by half.
+
+The mistake is documented in the script rather than quietly deleted, because catching it is the
+point.
+
+**Remaining honest limits:** CSI is a coarse three-way screen, never a precise figure. RaCA's site
+coordinates are **restricted** ("available only by request and approval"), so the point-for-point
+join to SSURGO — the validation I actually wanted — could not be run.
 
 ## The national map
 

@@ -46,30 +46,48 @@ export const PRACTICES = {
         'harvest that squeezes the planting window.',
     },
 
-    // SARE Cover Crop Economics (2019), inflated to present-day input costs is NOT
-    // done here — we present SARE's surveyed figures as published, and say so.
+    // COST BASELINE UPDATED — and the update matters.
+    //
+    // This used to carry SARE's 2019 surveyed median of $37/ac. That figure is stale, and a stale
+    // cost figure is not a neutral error: it makes every carbon deal on the market look better than
+    // it is, because the cost is the term you SUBTRACT. Iowa State's Ag Decision Maker, which is
+    // revised annually, puts the current total annual cost at roughly $57-68/ac depending on seeding
+    // method and termination. We now lead with that, and keep SARE's wider spread as the range.
     cost: {
-      seedLow: 10, seedHigh: 50,
+      seedLow: 12, seedHigh: 50,
       seedingLow: 5, seedingHigh: 18,
-      terminationLow: 0, terminationHigh: 10,
-      totalLow: 15, totalHigh: 78, totalMedian: 37,
-      src: 'sareCoverCropEconomics',
+      terminationLow: 0, terminationHigh: 12,
+      totalLow: 35, totalHigh: 78, totalMedian: 57,
+      src: 'isuAgDecisionMaker',
       caveat:
-        'SARE’s surveyed median all-in cost is $37/ac. Termination is often $0 because it folds ' +
-        'into a burndown herbicide pass the farmer was making anyway; if it needs its own pass, ' +
-        'budget the high end.',
+        'Iowa State puts the current all-in cost at about $57–68/ac (drill/aerial/broadcast, plus ' +
+        'termination) — well above the $37/ac median still widely quoted from SARE’s 2019 survey. ' +
+        'Termination sometimes costs $0 because it folds into a burndown pass you were making anyway; ' +
+        'if it needs its own pass, budget the high end.',
     },
 
     // Cover crops are the one practice with a credible mechanism for yield GAIN
     // over time (water infiltration, organic matter), but the evidence is genuinely mixed.
     yieldEffect: {
       note:
-        'Evidence is mixed and this tool refuses to pretend otherwise. The 2019 National Cover ' +
-        'Crop Survey found +5% soybean and +2% corn yields among adopters — but adopters are ' +
-        'self-selected, and controlled field experiments in Maryland found no statistically ' +
-        'significant yield effect in either crop. Expect roughly neutral yields, with downside ' +
-        'risk in the first two years while you learn termination timing.',
+        'Evidence is mixed and this tool refuses to pretend otherwise. The 2019 National Cover Crop ' +
+        'Survey found +5% soybean and +2% corn among adopters — but adopters are self-selected, and ' +
+        'controlled Maryland experiments found no statistically significant yield effect in either ' +
+        'crop. Expect roughly neutral yields, with downside risk in the first two years while you ' +
+        'learn termination timing.',
       src: 'sareCoverCropEconomics',
+    },
+
+    // The single most useful economic fact about cover crops, and one no carbon programme advertises.
+    economics: {
+      headline: 'Whether cover crops pay may depend on whether you can graze them.',
+      note:
+        'Across Iowa State trials, net returns to cereal rye WITHOUT grazing averaged −$50/acre and ' +
+        'were negative in 82% of treatments. WITH grazing, 45% of plots returned a positive average of ' +
+        '+$43/acre. If you run livestock, or can rent the grazing to someone who does, that single ' +
+        'decision can swing the economics further than any carbon payment on this page. If you cannot, ' +
+        'go in clear-eyed: on the numbers, you are buying soil health and cost-share, not profit.',
+      src: 'plastina2024',
     },
   },
 

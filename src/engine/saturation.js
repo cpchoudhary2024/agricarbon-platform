@@ -172,8 +172,17 @@ export function carbonSaturation({ omPct, clayPct, siltPct, bulkDensity, depthCm
 /** Non-saturating (particulate) share of surface soil carbon — Georgiou et al. 2022. */
 export const POM_FRACTION = 0.34;
 
-/** Median CSI of the 16,014 RaCA lab samples: the saturation state published rates were measured on. */
-export const REFERENCE_CSI = 0.69;
+/**
+ * Median CSI of the 3,332 RaCA CROPLAND lab samples — the saturation state the published rates
+ * were actually measured on.
+ *
+ * This was 0.69 in an earlier version, taken from the RaCA dataset pooled across ALL land uses.
+ * That was wrong: forest, rangeland and wetland soils carry far more carbon than cropland, so the
+ * pooled median described a population this tool never advises. Restricting to cropland — the
+ * population the cover-crop and no-till literature was measured on, and the only population this
+ * tool speaks to — gives 0.56.
+ */
+export const REFERENCE_CSI = 0.56;
 
 /** Stated cap on upward adjustment. A conservative choice, not a finding. */
 export const MAX_UPLIFT = 1.5;

@@ -266,6 +266,17 @@ export default function DecisionTool() {
               </div>
             </div>
 
+            {/* The grazing finding. Surfaced, not buried, because it can swing the economics further
+                than any carbon payment on this page — and it is the kind of thing a vendor calculator
+                would never volunteer. */}
+            {practiceIds.includes('cover-crops') && (
+              <div className="callout callout--info" style={{ fontSize: 13 }}>
+                <strong>{PRACTICES['cover-crops'].economics.headline}</strong>{' '}
+                {PRACTICES['cover-crops'].economics.note}
+                <Cite src={PRACTICES['cover-crops'].economics.src} />
+              </div>
+            )}
+
             {/* Warnings — the reason to trust this thing */}
             {result.warnings.length > 0 && (
               <div className="grid" style={{ gap: 10 }}>
