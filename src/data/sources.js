@@ -244,6 +244,53 @@ export const SOURCES = {
           'permanence risk, and it is why saturation matters for a farmer signing a 100-year commitment.',
   },
 
+  stewart2007: {
+    title: 'Soil carbon saturation: concept, evidence and evaluation',
+    authors: 'Stewart, C.E., Paustian, K., Conant, R.T., Plante, A.F., Six, J.',
+    org: 'Biogeochemistry 86, 19–31',
+    year: 2007,
+    url: 'https://link.springer.com/article/10.1007/s10533-007-9140-0',
+    retrieved: '2026-07-11',
+    tier: 'peer-reviewed',
+    note: 'The result that lets this tool scale sequestration to a field WITHOUT inventing a ' +
+          'coefficient. Across eight long-term agroecosystem experiments, the mineral-associated ' +
+          '(protected) pool SATURATES — its accrual falls toward zero as the soil fills — while the ' +
+          'unprotected particulate pool shows LINEAR, NON-SATURATING behaviour and keeps accruing ' +
+          'regardless. So a saturated soil does not stop gaining carbon; it stops gaining the ' +
+          'protected kind. That is the shape of our field-adjustment curve, and the floor beneath it.',
+  },
+
+  pittelkow2015: {
+    title: 'When does no-till yield more? A global meta-analysis',
+    authors: 'Pittelkow, C.M., Linquist, B.A., Lundy, M.E., et al.',
+    org: 'Field Crops Research 183, 156–168',
+    year: 2015,
+    url: 'https://www.sciencedirect.com/science/article/pii/S0378429015300228',
+    retrieved: '2026-07-11',
+    tier: 'peer-reviewed',
+    note: '678 studies, 6,005 paired observations, 50 crops, 63 countries. No-till reduces yield by ' +
+          '5.1% on average — but the average hides everything that matters: no-till MATCHES ' +
+          'conventional tillage under rainfed dry conditions, and losses shrink sharply when combined ' +
+          'with crop rotation and residue retention. This is the source of the central yield estimate ' +
+          'in this tool.',
+  },
+
+  alkaisi2015: {
+    title: 'Tillage and crop rotation effects on corn yield and economics on poorly drained soils',
+    authors: 'Al-Kaisi, M.M., et al. (see also DeFelice, M.S., et al., 2006)',
+    org: 'Iowa State University / Crop Management',
+    year: 2015,
+    url: 'https://crops.extension.iastate.edu/cropnews/2015/03/tillage-effects-corn-yield',
+    retrieved: '2026-07-11',
+    tier: 'peer-reviewed',
+    note: 'The number that makes drainage the most important free fact about your field. On poorly ' +
+          'drained northern soils, the corn yield penalty under no-till has been measured at close to ' +
+          '20% — roughly four times the global average. DeFelice et al. (2006) reach the same ' +
+          'conclusion: no-till losses concentrate in cold climates and poorly drained soils, while ' +
+          'no-till yields MORE in the warm, well-drained South. Drainage is not a footnote, it is the ' +
+          'whole story.',
+  },
+
   raca: {
     title: 'Rapid Carbon Assessment (RaCA)',
     org: 'USDA NRCS Soil and Plant Science Division',

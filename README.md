@@ -20,6 +20,45 @@ you're signing.
 
 ---
 
+## Every coefficient is derived or cited — including the ones I got wrong
+
+An earlier version of this engine carried numbers I had simply judged to be about right: four
+sequestration multipliers (1.25 / 1.0 / 0.55 / 0.3) and five yield-drag percentages (−6 / −5 / −3 /
+−1 / 0). They appeared nowhere in the literature. They were exactly the flaw this project was built
+to refuse — an unsourced coefficient that quietly moves the answer — and they are gone.
+
+**Yield drag** now comes from the meta-analyses, and the real evidence was **four times more severe**
+than my guess at the bad end:
+
+| | Was (invented) | Now (published) |
+|---|---|---|
+| Poorly drained | −5% | **−20% to −5%** — [Al-Kaisi 2015](https://crops.extension.iastate.edu/cropnews/2015/03/tillage-effects-corn-yield), DeFelice 2006 |
+| Somewhat poorly drained | −3% | **−10% to 0%**, central −5.1% — [Pittelkow 2015](https://www.sciencedirect.com/science/article/pii/S0378429015300228) |
+| Well drained | 0% | **−2% to +2%** — no-till *matches* conventional on rainfed well-drained ground |
+
+**The sequestration multiplier** is no longer a lookup table. It is computed from the continuous CSI
+using three published quantities:
+
+```
+deficitRatio = max(0, 1 − CSI) / (1 − REFERENCE_CSI)
+multiplier   = min(1.5, POM_FRACTION + (1 − POM_FRACTION) × deficitRatio)
+```
+
+- **`POM_FRACTION = 0.34`** — the particulate share of surface soil carbon. [Stewart et al.
+  (2007)](https://link.springer.com/article/10.1007/s10533-007-9140-0) show the mineral pool
+  *saturates* while the particulate pool is *linear and non-saturating*; [Georgiou et al.
+  (2022)](https://www.nature.com/articles/s41467-022-31540-9) put mineral-associated carbon at 66% of
+  surface soil carbon, leaving 34%. **This is why the curve has a floor instead of falling to zero:**
+  a full soil doesn't stop gaining carbon, it stops gaining the *durable* kind.
+- **`REFERENCE_CSI = 0.69`** — the median saturation of the 16,014 RaCA lab samples, i.e. the state of
+  the soils the published rates were *actually measured on*. A field there gets the published rate
+  unchanged.
+- **`1.5`** — a stated cap on upward adjustment. This is the one judgement call left, and the code and
+  the UI both say so.
+
+The derivation is shown to the user in the app, not buried. A regression test asserts the magic
+numbers cannot come back.
+
 ## Validation — including where the model fails
 
 Everything here rests on one claim: soil has a finite, texture-set capacity to hold carbon. So we

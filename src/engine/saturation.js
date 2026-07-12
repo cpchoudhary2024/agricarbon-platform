@@ -114,12 +114,87 @@ export function carbonSaturation({ omPct, clayPct, siltPct, bulkDensity, depthCm
   };
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   FIELD ADJUSTMENT — how much of the literature's sequestration rate applies HERE
+   ═══════════════════════════════════════════════════════════════════════════
+
+   An earlier version of this file carried a lookup table of four multipliers — 1.25, 1.0, 0.55,
+   0.3 — one per saturation band. They were nowhere in the literature. They were a judgement call
+   wearing a lab coat, and they were exactly the sin this project was built to refuse: an
+   unsourced coefficient that silently moves the answer. They are gone.
+
+   What replaces them is derived from three published quantities and one stated assumption.
+
+   THE MECHANISM (Stewart et al. 2007)
+   -----------------------------------
+   Soil carbon lives in two pools that behave completely differently as a soil fills up:
+
+     MINERAL-ASSOCIATED (protected)  → SATURATES. Accrual falls toward zero as the soil
+                                       approaches its capacity.
+     PARTICULATE / unprotected       → LINEAR, NON-SATURATING. Keeps accruing regardless.
+
+   So a saturated soil does not stop gaining carbon. It stops gaining the DURABLE kind — and the
+   carbon it does gain is the vulnerable kind that leaves again the moment you till. That single
+   fact is the shape of the curve below, and the reason it has a floor rather than hitting zero.
+
+   THE THREE NUMBERS, ALL CITED
+   ----------------------------
+     POM_FRACTION  = 0.34   Particulate (non-saturating) share of surface soil carbon.
+                            Georgiou et al. 2022 find mineral-associated carbon is 66% of soil
+                            carbon in surface layers; the remaining 34% is the pool that does not
+                            saturate. This is the FLOOR — the accrual that continues even in a
+                            full soil.
+
+     REFERENCE_CSI = 0.69   The saturation state of the soils the published rates were MEASURED
+                            on. Taken from our own analysis of 16,014 RaCA laboratory samples
+                            (median CSI). This matters: a literature rate is not a universal
+                            constant, it is an average over whatever soils happened to be in the
+                            studies. Anchoring to their median is what makes the scaling honest,
+                            and it is why a field at CSI 0.69 gets exactly the published rate.
+
+     MAX_UPLIFT    = 1.5    A stated CAP, and the one judgement call left in this function.
+                            The formula would otherwise hand a very empty soil a large multiple of
+                            the literature rate, which is not a claim the evidence supports. We cap
+                            it, we say so here, and we say so on the page. It is a choice, not a
+                            finding.
+
+   THE FORMULA
+   -----------
+     deficitRatio = max(0, 1 − CSI) / (1 − REFERENCE_CSI)
+     multiplier   = min(MAX_UPLIFT, POM_FRACTION + (1 − POM_FRACTION) × deficitRatio)
+
+   Sanity checks, which the tests enforce:
+     CSI = 0.69 (the reference)   → multiplier = 1.00  … the published rate, unchanged
+     CSI = 1.61 (saturated Iowa)  → multiplier = 0.34  … only the non-saturating pool remains
+     CSI = 0.30 (depleted South)  → multiplier = 1.50  … capped
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/** Non-saturating (particulate) share of surface soil carbon — Georgiou et al. 2022. */
+export const POM_FRACTION = 0.34;
+
+/** Median CSI of the 16,014 RaCA lab samples: the saturation state published rates were measured on. */
+export const REFERENCE_CSI = 0.69;
+
+/** Stated cap on upward adjustment. A conservative choice, not a finding. */
+export const MAX_UPLIFT = 1.5;
+
+/**
+ * Scale a published sequestration rate to a field of known saturation.
+ * Returns 1.0 for a field sitting at the reference saturation.
+ */
+export function fieldMultiplier(csi) {
+  const deficitRatio = Math.max(0, 1 - csi) / (1 - REFERENCE_CSI);
+  const raw = POM_FRACTION + (1 - POM_FRACTION) * deficitRatio;
+  return Math.round(Math.min(MAX_UPLIFT, raw) * 100) / 100;
+}
+
 /**
  * Interpretation bands.
  *
- * These thresholds are a judgement call about how to communicate a continuous index, and we say so.
- * The underlying number (CSI) is always shown, so a reader who disagrees with our cut-points can
- * apply their own.
+ * The cut-points (0.6 / 0.9 / 1.1) are a judgement about how to communicate a continuous index,
+ * and we say so. The underlying CSI is always shown, so a reader who disagrees can apply their own.
+ * Note that the bands are for COMMUNICATION only — the sequestration adjustment is computed from
+ * the continuous CSI via fieldMultiplier(), not from which bucket a field lands in.
  */
 export function saturationBand(csi) {
   if (csi < 0.6) {
@@ -133,7 +208,6 @@ export function saturationBand(csi) {
         'build here has somewhere stable to go, and is more likely to persist. On the physics, this is ' +
         'a genuinely good carbon-farming candidate — which is a different question from whether the ' +
         'contract on offer is a good deal.',
-      sequestrationMultiplier: 1.25,
     };
   }
   if (csi < 0.9) {
@@ -145,7 +219,6 @@ export function saturationBand(csi) {
       body:
         'Your soil is below its mineral protective capacity but not dramatically so. Expect accrual ' +
         'in the middle of the published range, and expect it to slow as you approach capacity.',
-      sequestrationMultiplier: 1.0,
     };
   }
   if (csi < 1.1) {
@@ -159,7 +232,6 @@ export function saturationBand(csi) {
         'Additional carbon has diminishing places to bind. Expect accrual at the LOW end of published ' +
         'ranges, and be sceptical of any program projecting otherwise. A per-ton contract is a poor fit ' +
         'here: you would be carrying measurement risk on a soil that is physically unlikely to deliver.',
-      sequestrationMultiplier: 0.55,
     };
   }
   return {
@@ -175,19 +247,22 @@ export function saturationBand(csi) {
       'carbon already there sits in unprotected particulate form (Cotrufo et al. 2019) and is ' +
       'vulnerable to loss if you till — which matters a great deal if you have signed a permanence ' +
       'obligation. If you enrol at all, strongly prefer a flat per-acre program.',
-    sequestrationMultiplier: 0.3,
   };
 }
 
 /**
  * Adjust a published national sequestration range to THIS field.
  *
- * This is the payoff of the whole exercise: the literature's range is what happened across many
- * fields with many different saturation states. Knowing where this field sits lets us scale it.
- * We do NOT invent precision — we scale the published range and keep it a range.
+ * This is the payoff of the whole exercise. The literature's range is what happened across many
+ * fields at many different saturation states; knowing where THIS field sits lets us scale it. We do
+ * not invent precision — we scale the published range and it stays a range.
+ *
+ * Takes the CSI directly rather than a band, because the adjustment is continuous. Bucketing a
+ * field into "near-capacity" and then applying a bucket-wide coefficient was the old, bad design:
+ * it made a field at CSI 0.89 and one at CSI 0.61 behave identically for no reason.
  */
-export function fieldAdjustedRange({ low, central, high }, band) {
-  const m = band.sequestrationMultiplier;
+export function fieldAdjustedRange({ low, central, high }, csi) {
+  const m = fieldMultiplier(csi);
   return {
     low: round(low * m, 3),
     central: round(central * m, 3),

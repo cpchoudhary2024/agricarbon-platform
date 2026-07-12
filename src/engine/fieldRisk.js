@@ -26,61 +26,108 @@
    never surfaced to farmers deciding on a carbon contract.
 */
 
+/*
+ * THE NUMBERS BELOW ARE CITED. AN EARLIER VERSION'S WERE NOT.
+ * ----------------------------------------------------------
+ * This table used to hold −6%, −5%, −3%, −1%, 0% — figures that were nowhere in the literature and
+ * that I had simply judged to be about right. They were not about right. When I finally went and
+ * read the meta-analyses, the real evidence was roughly FOUR TIMES more severe at the bad end:
+ *
+ *   Pittelkow et al. (2015), Field Crops Research — 678 studies, 6,005 paired observations:
+ *     no-till reduces yield by 5.1% ON AVERAGE, but MATCHES conventional tillage under rainfed
+ *     dry conditions. The average hides everything that matters.
+ *
+ *   Al-Kaisi et al. (2015) / DeFelice et al. (2006):
+ *     on POORLY DRAINED northern soils the corn penalty has been measured at close to 20%.
+ *     Losses concentrate in cold, wet, poorly drained ground; no-till yields MORE in the warm,
+ *     well-drained South.
+ *
+ * Which is the whole argument for this tool: drainage is not a footnote, it is the single most
+ * important free fact about your field, and no carbon program will look it up for you.
+ *
+ * Values are RANGES, never point estimates, for the same reason everything else here is.
+ */
+
 const DRAINAGE_RISK = {
   'Very poorly drained': {
-    level: 'high', color: '#B91C1C', expectedYieldPct: -6,
+    level: 'high', color: '#B91C1C',
+    yieldPct: { low: -20, central: -12, high: -5 },
+    src: 'alkaisi2015',
     label: 'High risk of transition yield drag',
-    body: 'Very poorly drained soils are the worst case for no-till establishment. Residue keeps an ' +
-          'already-wet, cold seedbed colder and wetter, delaying emergence. Expect a meaningful yield ' +
-          'penalty in early years. Strip-till or tile drainage first would be the sober move — and if a ' +
-          'carbon program is pushing you straight to full no-till here, that is a reason to slow down.',
+    body: 'The worst case for no-till. Residue keeps an already-wet, cold seedbed colder and wetter, ' +
+          'delaying emergence. On poorly drained northern ground the measured corn penalty runs as high ' +
+          'as 20% — four times the global average. Tile drainage or strip-till first is the sober move. ' +
+          'If a carbon program is pushing you straight into full no-till here, that is a reason to slow ' +
+          'down, not to sign.',
   },
   'Poorly drained': {
-    level: 'high', color: '#B91C1C', expectedYieldPct: -5,
+    level: 'high', color: '#B91C1C',
+    yieldPct: { low: -20, central: -10, high: -5 },
+    src: 'alkaisi2015',
     label: 'High risk of transition yield drag',
-    body: 'Poorly drained soils reliably show a no-till transition penalty from cold, wet spring ' +
-          'seedbeds. Budget for a yield hit in the first few years. Consider strip-till, which gets you ' +
-          'most of the residue benefit while still warming the seed row.',
+    body: 'Poorly drained soils reliably show a no-till penalty from cold, wet spring seedbeds, and the ' +
+          'measured corn penalty on this kind of ground reaches close to 20%. Budget for a real yield ' +
+          'hit in the early years. Strip-till gets you most of the residue benefit while still warming ' +
+          'the seed row.',
   },
   'Somewhat poorly drained': {
-    level: 'moderate', color: '#B45309', expectedYieldPct: -3,
+    level: 'moderate', color: '#B45309',
+    yieldPct: { low: -10, central: -5.1, high: 0 },
+    src: 'pittelkow2015',
     label: 'Moderate risk of transition yield drag',
-    body: 'Somewhat poorly drained soils typically show a modest early yield penalty under no-till that ' +
-          'fades over roughly 3–5 years as structure and biology adjust. Real, but manageable — and ' +
-          'usually worth planning for rather than being surprised by.',
+    body: 'Expect something close to the global average penalty of about 5%, fading over roughly 3–5 ' +
+          'years as structure and biology adjust. Real, but manageable — and much better planned for ' +
+          'than discovered.',
   },
   'Moderately well drained': {
-    level: 'low', color: '#4D7C0F', expectedYieldPct: -1,
+    level: 'low', color: '#4D7C0F',
+    yieldPct: { low: -5.1, central: -2, high: 0 },
+    src: 'pittelkow2015',
     label: 'Low risk of transition yield drag',
-    body: 'Moderately well drained soils generally tolerate no-till with little or no yield penalty. ' +
-          'Any early effect is usually small and short-lived.',
+    body: 'Generally tolerates no-till with little penalty. Any early effect is usually small and ' +
+          'short-lived, and rotation plus residue retention shrinks it further.',
   },
   'Well drained': {
-    level: 'low', color: '#15803D', expectedYieldPct: 0,
+    level: 'low', color: '#15803D',
+    yieldPct: { low: -2, central: 0, high: 2 },
+    src: 'pittelkow2015',
     label: 'Minimal yield-drag risk',
-    body: 'Well drained soils are the best case for no-till. The cold-wet-seedbed mechanism that drives ' +
-          'transition yield drag largely does not apply here. You should not expect a meaningful penalty.',
+    body: 'The best case. The cold-wet-seedbed mechanism that drives transition yield drag largely does ' +
+          'not apply, and no-till matches conventional tillage on well-drained rainfed ground. Do not ' +
+          'let anyone talk you into budgeting a penalty you are unlikely to pay.',
   },
   'Somewhat excessively drained': {
-    level: 'low', color: '#15803D', expectedYieldPct: 0,
-    label: 'Minimal yield-drag risk — and residue helps you',
-    body: 'On freely draining soils, no-till residue helps rather than hurts: it conserves moisture. If ' +
-          'anything, expect residue cover to reduce drought stress.',
+    level: 'low', color: '#15803D',
+    yieldPct: { low: 0, central: 1, high: 3 },
+    src: 'pittelkow2015',
+    label: 'Minimal risk — residue is likely to HELP',
+    body: 'On freely draining ground, no-till residue conserves moisture rather than trapping it. ' +
+          'No-till performs best in exactly these rainfed, drier conditions, and residue cover may ' +
+          'reduce drought stress.',
   },
   'Excessively drained': {
-    level: 'low', color: '#15803D', expectedYieldPct: 0,
-    label: 'Minimal yield-drag risk — and residue helps you',
-    body: 'Excessively drained soils lose moisture readily. No-till residue conserves it. The transition ' +
-          'yield-drag concern largely does not apply, and cover may be a net agronomic benefit.',
+    level: 'low', color: '#15803D',
+    yieldPct: { low: 0, central: 1, high: 3 },
+    src: 'pittelkow2015',
+    label: 'Minimal risk — residue is likely to HELP',
+    body: 'Excessively drained soils lose moisture readily and no-till residue conserves it. The ' +
+          'transition-drag concern does not really apply here; cover is more likely to be a net ' +
+          'agronomic gain.',
   },
 };
 
 export function yieldDragRisk(drainageClass) {
   const hit = DRAINAGE_RISK[drainageClass];
-  if (hit) return { ...hit, drainageClass, known: true };
+  if (hit) {
+    return { ...hit, expectedYieldPct: hit.yieldPct.central, drainageClass, known: true };
+  }
 
   return {
-    level: 'unknown', color: '#64748B', expectedYieldPct: 0, drainageClass: drainageClass || 'Unknown',
+    level: 'unknown', color: '#64748B',
+    yieldPct: { low: 0, central: 0, high: 0 },
+    expectedYieldPct: 0,
+    src: null,
+    drainageClass: drainageClass || 'Unknown',
     known: false,
     label: 'Drainage class not reported for this soil',
     body: 'SSURGO does not report a drainage class for this map unit, so we will not guess at your ' +

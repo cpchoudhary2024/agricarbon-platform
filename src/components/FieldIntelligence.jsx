@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
-import { carbonSaturation, fieldAdjustedRange } from '../engine/saturation';
+import {
+  carbonSaturation, fieldAdjustedRange, POM_FRACTION, REFERENCE_CSI,
+} from '../engine/saturation';
 import { yieldDragRisk, additionalityRisk, rotationSummary } from '../engine/fieldRisk';
 import { PRACTICES } from '../data/practices';
 import Cite from './Cite';
@@ -249,11 +251,14 @@ function FieldReport({ data, place }) {
           title={drag.label}
           color={drag.color}
           body={drag.body}
-          foot={<>Predicted from your soil&rsquo;s SSURGO drainage class: <strong>{drag.drainageClass}</strong>.
-            Drainage is the dominant control on no-till transition drag, and it is free public data
-            that no carbon program will look up for you.<Cite src="ssurgo" /></>}
+          foot={<>From your soil&rsquo;s SSURGO drainage class: <strong>{drag.drainageClass}</strong>.
+            <Cite src="ssurgo" /> Range is the published evidence for this drainage class
+            {drag.src && <Cite src={drag.src} />} — drainage is the dominant control on no-till
+            transition drag, and it is free public data no carbon program will look up for you.</>}
           metric={drag.known ? `${drag.expectedYieldPct > 0 ? '+' : ''}${drag.expectedYieldPct}%` : '—'}
-          metricLabel="expected early-year yield effect"
+          metricLabel={drag.known
+            ? `central; published range ${drag.yieldPct.low}% to ${drag.yieldPct.high > 0 ? '+' : ''}${drag.yieldPct.high}%`
+            : 'not reported'}
         />
 
         <RiskCard
@@ -374,8 +379,8 @@ function Recommendation({ sat, drag, add }) {
   const saturated = sat.band.key === 'saturated' || sat.band.key === 'near-capacity';
   const dragRisky = drag.level === 'high';
 
-  const cc = fieldAdjustedRange(PRACTICES['cover-crops'].sequestration, sat.band);
-  const nt = fieldAdjustedRange(PRACTICES['no-till'].sequestration, sat.band);
+  const cc = fieldAdjustedRange(PRACTICES['cover-crops'].sequestration, sat.csi);
+  const nt = fieldAdjustedRange(PRACTICES['no-till'].sequestration, sat.csi);
 
   let headline, tone, body;
 
@@ -431,15 +436,46 @@ function Recommendation({ sat, drag, add }) {
         Sequestration, adjusted for your soil
       </div>
       <p className="small muted" style={{ marginTop: 0, marginBottom: 14 }}>
-        The published national ranges, scaled by your field&rsquo;s saturation state
-        (×{sat.band.sequestrationMultiplier}). A saturated soil earns less than the literature average
-        because the literature average includes soils with headroom.
+        The published national ranges, scaled by <strong className="mono">×{cc.multiplier}</strong> for
+        your field&rsquo;s saturation. A full soil earns less than the literature average, because that
+        average includes soils with headroom.
       </p>
 
       <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))' }}>
         <AdjRange name="Cover crops" r={cc} base={PRACTICES['cover-crops'].sequestration} src="joshi2023" />
         <AdjRange name="No-till" r={nt} base={PRACTICES['no-till'].sequestration} src="powlson2014" />
       </div>
+
+      <Disclosure summary={`Where does ×${cc.multiplier} come from?`}>
+        <p style={{ margin: '0 0 8px' }}>
+          Not from a lookup table of numbers we made up — an earlier version of this tool did exactly
+          that, and it was wrong to. It is computed from your CSI using three published quantities:
+        </p>
+        <div className="mono tiny" style={{
+          background: 'var(--paper)', border: '1px solid var(--rule)', borderRadius: 6,
+          padding: 11, marginBottom: 9, lineHeight: 1.8,
+        }}>
+          deficitRatio = max(0, 1 − {sat.csi}) ÷ (1 − {REFERENCE_CSI})<br />
+          multiplier&nbsp; = {POM_FRACTION} + (1 − {POM_FRACTION}) × deficitRatio&nbsp; → <strong>×{cc.multiplier}</strong>
+        </div>
+        <ul style={{ margin: 0, paddingLeft: 17 }}>
+          <li style={{ marginBottom: 5 }}>
+            <strong>{POM_FRACTION}</strong> is the particulate share of surface soil carbon — the pool
+            that does <em>not</em> saturate and keeps accruing even in a full soil.<Cite src="stewart2007" />
+            {' '}Mineral-associated carbon is 66% of surface soil carbon, leaving 34%.<Cite src="georgiou2022" />
+            {' '}That is why the multiplier has a floor instead of falling to zero.
+          </li>
+          <li style={{ marginBottom: 5 }}>
+            <strong>{REFERENCE_CSI}</strong> is the median saturation of the 16,014 laboratory samples we
+            validated against<Cite src="raca" /> — i.e. the state of the soils the published rates were
+            actually measured on. A field at that saturation gets the published rate unchanged.
+          </li>
+          <li style={{ margin: 0 }}>
+            The uplift is capped at <strong>×1.5</strong>. That cap is a conservative judgement call, not
+            a finding, and we would rather say so than dress it up.
+          </li>
+        </ul>
+      </Disclosure>
     </div>
   );
 }
