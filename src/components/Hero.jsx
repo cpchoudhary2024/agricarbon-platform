@@ -1,4 +1,5 @@
 import Cite from './Cite';
+import { Mark } from './Chrome';
 
 /**
  * The hero has one job: state the question this site answers, in the words a
@@ -9,11 +10,38 @@ export default function Hero({ onMethodology }) {
     <header style={{ background: 'var(--paper)', borderBottom: '1px solid var(--rule)' }}>
       <div className="wrap" style={{ padding: '72px 24px 64px' }}>
 
-        <p className="eyebrow" style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-          <span>Independent · Non-commercial · Fully cited</span>
-          <span style={{ color: 'var(--soil-300)' }}>|</span>
-          <span style={{ color: 'var(--soil-500)' }}>We sell nothing and take no commission</span>
-        </p>
+        {/* Masthead. The name is established once, properly, before the question is asked —
+            a publication's front page, not a startup's landing page. */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 13, flexWrap: 'wrap',
+          paddingBottom: 20, marginBottom: 26,
+          borderBottom: '2px solid var(--ink)',
+        }}>
+          <Mark size={40} />
+          <div>
+            <div style={{
+              fontSize: 'clamp(24px, 3vw, 30px)', fontWeight: 800,
+              letterSpacing: '-0.035em', color: 'var(--ink)', lineHeight: 1,
+            }}>
+              Ground Truth
+            </div>
+            <div className="small" style={{ color: 'var(--soil-600)', marginTop: 4, fontWeight: 550 }}>
+              An independent check on agricultural carbon contracts
+            </div>
+          </div>
+
+          <div style={{ marginLeft: 'auto', textAlign: 'right' }}>
+            <div className="tiny" style={{
+              fontWeight: 700, letterSpacing: '0.09em', textTransform: 'uppercase',
+              color: 'var(--green-700)',
+            }}>
+              Non-commercial
+            </div>
+            <div className="tiny muted" style={{ marginTop: 2 }}>
+              We sell nothing · take no commission
+            </div>
+          </div>
+        </div>
 
         <h1 style={{ maxWidth: '16ch', marginBottom: 22 }}>
           Should you sign that carbon contract?

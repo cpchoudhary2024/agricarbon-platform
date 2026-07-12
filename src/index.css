@@ -360,7 +360,7 @@ a:hover { color: var(--green-900); }
   a { text-decoration: none; color: #000; }
 
   #field::before {
-    content: "Ground Truth — Field Report · groundtruth.farm · Planning-grade estimate, not a credit-grade measurement. Verify USDA rates with your state NRCS office.";
+    content: "Ground Truth — Field Report · agricarbon-estimator.vercel.app · Planning-grade estimate, not a credit-grade measurement. Verify USDA rates with your state NRCS office.";
     display: block;
     font-size: 9pt;
     color: #444;

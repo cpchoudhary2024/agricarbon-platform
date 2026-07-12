@@ -15,6 +15,29 @@ const METHOD_LINKS = [
   { href: '#sources',    label: 'Sources' },
 ];
 
+/**
+ * The mark: a soil profile in section, filled about two-thirds.
+ *
+ * It is the argument of the whole site in one glyph. Soil is a container with a finite capacity,
+ * and the only question that matters is how much room is left in yours. The line at the top is the
+ * ground surface; the pale band beneath it is headroom — the space a carbon contract is really
+ * selling you; the solid bands are carbon already held.
+ *
+ * Deliberately not a leaf, a globe, or a pair of hands cupping soil. Every carbon company uses
+ * those, and looking like one of them is the fastest way to lose a farmer's trust.
+ */
+export function Mark({ size = 28 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true" style={{ flexShrink: 0, display: 'block' }}>
+      <rect width="32" height="32" rx="7" fill="var(--green-900)" />
+      <rect x="6" y="7.5" width="20" height="1.6" rx="0.8" fill="#FAFAF9" />
+      <rect x="6" y="12" width="20" height="4.2" rx="1.2" fill="#FAFAF9" opacity="0.26" />
+      <rect x="6" y="17.6" width="20" height="3.6" rx="1.2" fill="#4ADE80" />
+      <rect x="6" y="22.6" width="20" height="3.6" rx="1.2" fill="#22C55E" />
+    </svg>
+  );
+}
+
 export function Nav({ view = 'decide', onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const links = view === 'method' ? METHOD_LINKS : DECIDE_LINKS;
@@ -44,21 +67,25 @@ export function Nav({ view = 'decide', onNavigate }) {
         <button
           onClick={() => onNavigate?.('decide')}
           style={{
-            display: 'flex', alignItems: 'center', gap: 9,
+            display: 'flex', alignItems: 'center', gap: 10,
             background: 'none', border: 'none', padding: 0, cursor: 'pointer',
             textDecoration: 'none', flexShrink: 0,
           }}
         >
-          <span style={{
-            width: 26, height: 26, borderRadius: 6, flexShrink: 0,
-            background: 'var(--green-900)', display: 'grid', placeItems: 'center',
-          }}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 22V8M12 8c0-3 2-6 6-6 0 4-2 6-6 6zM12 12c0-3-2-6-6-6 0 4 2 6 6 6z" />
-            </svg>
-          </span>
-          <span style={{ fontWeight: 750, fontSize: 15, color: 'var(--ink)', letterSpacing: '-0.02em' }}>
-            Ground Truth
+          <Mark size={28} />
+          <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: 1 }}>
+            <span style={{
+              fontWeight: 800, fontSize: 15.5, color: 'var(--ink)',
+              letterSpacing: '-0.025em',
+            }}>
+              Ground Truth
+            </span>
+            <span className="tiny" style={{
+              color: 'var(--soil-500)', fontWeight: 600, letterSpacing: '0.03em',
+              marginTop: 2, whiteSpace: 'nowrap',
+            }}>
+              Carbon contracts, checked
+            </span>
           </span>
         </button>
 
@@ -115,8 +142,11 @@ export function Footer({ onMethodology }) {
           style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 32, marginBottom: 32 }}
         >
           <div>
-            <div style={{ fontWeight: 750, fontSize: 16, color: '#fff', marginBottom: 8 }}>
-              Ground Truth
+            <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 10 }}>
+              <Mark size={26} />
+              <span style={{ fontWeight: 800, fontSize: 16.5, color: '#fff', letterSpacing: '-0.025em' }}>
+                Ground Truth
+              </span>
             </div>
             <p className="small" style={{ margin: '0 0 10px', color: 'var(--soil-400)', maxWidth: '38ch' }}>
               An independent, non-commercial decision tool for US farmers weighing agricultural carbon
