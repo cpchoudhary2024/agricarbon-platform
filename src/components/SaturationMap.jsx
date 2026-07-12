@@ -205,13 +205,27 @@ export default function SaturationMap() {
                   </span>
                 </div>
               ))}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 7, marginTop: 5, paddingTop: 5, borderTop: '1px solid var(--rule)' }}>
-                <span style={{ width: 12, height: 12, borderRadius: 3, background: '#E7E5E4', flexShrink: 0 }} />
-                <span className="tiny muted">No arable soil surveyed</span>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 7, marginTop: 5, paddingTop: 5, borderTop: '1px solid var(--rule)' }}>
+                <span style={{ width: 12, height: 12, borderRadius: 3, background: '#E7E5E4', flexShrink: 0, marginTop: 2 }} />
+                <span className="tiny muted" style={{ maxWidth: 150, lineHeight: 1.45 }}>
+                  <strong style={{ color: 'var(--soil-600)' }}>No cropland</strong><br />
+                  mountain, desert or urban — nothing farmable to assess
+                </span>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Pre-empt the first question everyone asks about this map. The grey is not missing data —
+            it is the answer — and saying so turns a perceived gap into evidence the filter works. */}
+        <p className="small muted" style={{ marginTop: 14, marginBottom: 0 }}>
+          <strong style={{ color: 'var(--soil-700)' }}>The grey counties are not missing data.</strong>{' '}
+          They have no class 1–3 arable soil at all, so there is no cropland there to assess. Colorado
+          looks patchy because 23 of its counties <em>are</em> the Rocky Mountains — Summit, Eagle,
+          Pitkin (Breckenridge, Vail, Aspen). The rest of the grey is Sierra Nevada, Appalachian coal
+          country, Nevada desert — and San Francisco. If a city and a ski resort come back grey, the
+          filter is doing its job.<Cite src="ssurgo" />
+        </p>
 
         {/* Accessible, searchable equivalent of the map. Also just faster than hunting for your
             county with a mouse. */}
