@@ -23,3 +23,60 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
+
+# ─── Data-engineering hygiene (added by audit) ───
+# Secrets — never commit credentials
+.env
+.env.*
+!.env.example
+
+# Raw / bulk data: keep on disk, keep out of git (regenerate or fetch on demand)
+data/raw/*
+data/cache/
+*.nc
+*.nc4
+*.hdf5
+*.parquet
+*.zip
+*.7z
+
+# Build artifacts & dependency trees
+node_modules/
+dist/
+build/
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+.coverage
+htmlcov/
+
+# Stray logs & run debris
+*.log
+logs/
+*.pid
+
+# Office lock/temp files (e.g. ~$report.docx)
+~$*
+*.tmp
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+
+# ─── Keep the standard scaffold under version control ───
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!outputs/
+!outputs/plots/
+!outputs/plots/.gitkeep
+!notebooks/

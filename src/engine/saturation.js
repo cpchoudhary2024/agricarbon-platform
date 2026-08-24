@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Chandra Prakash Choudhary. All rights reserved.
 /**
  * CARBON SATURATION — the scientific core of this tool.
  * ====================================================

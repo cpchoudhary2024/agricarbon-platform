@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Chandra Prakash Choudhary. All rights reserved.
 /**
  * USDA NRCS Soil Data Access (SSURGO) client.
  *

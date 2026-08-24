@@ -1,3 +1,4 @@
+// Copyright (c) 2026 Chandra Prakash Choudhary. All rights reserved.
 /**
  * EPSG:4326 (lat/lon) → EPSG:5070 (NAD83 / CONUS Albers Equal Area).
  *
